@@ -252,13 +252,21 @@ function ProductList() {
         setShowCart(false);
     };
 
-    const handleAddToCart = (product) => {
-        dispatch(addItem(product));
+    const handleAddToCart = (item) => {
+        dispatch(addItem(item));
         setAddedToCart((prevState) => ({
             ...prevState,
-            [product.name]: true,
+            [item.name]: true,
         }));
     };
+
+    const handleResetAddedToCart = (itemName) => {
+        setAddedToCart((prevState) => ({
+            ...prevState,
+            [itemName]: false, // Reset the state when an item is removed
+        }));
+    };
+    
 
     return (
         <div>
@@ -311,6 +319,7 @@ function ProductList() {
                                         >
                                             {addedToCart[plant.name] ? 'Added to Cart' : 'Add to Cart'}
                                         </button>
+
                                     </div>
                                 ))}
                             </div>
@@ -318,7 +327,7 @@ function ProductList() {
                     ))}
                 </div>
             ) : (
-                <CartItem onContinueShopping={handleContinueShopping} />
+                <CartItem onContinueShopping={handleContinueShopping} updateAddedToCart={handleResetAddedToCart}/>
             )}
         </div>
     );
